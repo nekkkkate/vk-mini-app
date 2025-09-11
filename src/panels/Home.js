@@ -1,10 +1,27 @@
 import { Panel, PanelHeader, Header, Button, Group, Cell, Div, Avatar } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import PropTypes from 'prop-types';
+import bridge from '@vkontakte/vk-bridge';
 
 export const Home = ({ id, fetchedUser }) => {
   const { photo_200, city, first_name, last_name } = { ...fetchedUser };
   const routeNavigator = useRouteNavigator();
+
+  async function openRandomDogStory() {
+    try {
+      const response = await fetch('https://dog.ceo/api/breeds/image/random');
+      const data = await response.json();
+      const imageUrl = data.message;
+
+      await bridge.send("VKWebAppShowStoryBox", {
+        background_type: "image",
+        url: imageUrl
+      });
+    } catch (err) {
+      console.error('Ошибка при открытии истории:', err);
+      alert('Не удалось открыть историю');
+    }
+  }
 
   return (
     <Panel id={id}>
@@ -21,6 +38,15 @@ export const Home = ({ id, fetchedUser }) => {
         <Div>
           <Button stretched size="l" mode="secondary" onClick={() => routeNavigator.push('persik')}>
             Покажите Персика, пожалуйста!
+          </Button>
+        </Div>
+        <Div>
+          <Button
+              stretched
+              size="l"
+              onClick={openRandomDogStory}
+          >
+            выложим в историю случайного песеля?:))
           </Button>
         </Div>
       </Group>

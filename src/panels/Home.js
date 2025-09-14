@@ -7,9 +7,9 @@ export const Home = ({ id, fetchedUser }) => {
   const { photo_200, city, first_name, last_name } = { ...fetchedUser };
   const routeNavigator = useRouteNavigator();
 
-  async function openRandomDogStory() {
+  async function openRandomCatStory() {
     try {
-      const response = await fetch('https://dog.ceo/api/breeds/image/random');
+      const response = await fetch('https://api.sefinek.net/api/v2/random/animal/cat');
       const data = await response.json();
       const imageUrl = data.message;
 
@@ -44,9 +44,10 @@ export const Home = ({ id, fetchedUser }) => {
           <Button
               stretched
               size="l"
-              onClick={openRandomDogStory}
+              onClick={openRandomCatStory}
+              style={{ backgroundColor: '#ff69b4', color: '#fff' }}
           >
-            выложим в историю случайного песеля?:))
+            выложим в историю случайного котика?:))
           </Button>
         </Div>
       </Group>
